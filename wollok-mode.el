@@ -17,6 +17,7 @@
     syntax-table)
   "Syntax table for `wollok-mode'")
 
+;;;###autoload
 (define-derived-mode wollok-mode prog-mode "wollok"
   ;; Enable electric-indent-mode
   (electric-indent-local-mode 1)
@@ -60,8 +61,13 @@
            ("\\b\\(super\\)\\s-*(" 1 font-lock-function-name-face)
            ("\\(?:[[:alpha:]_][[:alnum:]_]*\\|[[:digit:]]\\|)\\)\\.\\([[:alpha:]_][[:alnum:]_]*\\)\\s-*(" 1 font-lock-function-name-face)))))
 
+;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.wlk\\'" . wollok-mode))
+;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.wpgm\\'" . wollok-mode))
+;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.wtest\\'" . wollok-mode))
 
 (provide 'wollok-mode)
+
+;;; wollok-mode.el ends here
