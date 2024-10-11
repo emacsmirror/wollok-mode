@@ -51,7 +51,7 @@
    ;; Functions
    '("\\bmethod\\s-+\\([[:alpha:]_][[:alnum:]_]*\\)?\\b" 1 font-lock-function-name-face)
    '("\\b\\(super\\)\\s-*(" 1 font-lock-function-name-face)
-   '("\\(?:[[:alpha:]_][[:alnum:]_]*\\|[[:digit:]]\\|)\\)\\.\\([[:alpha:]_][[:alnum:]_]*\\)\\s-*(" 1 font-lock-function-name-face)))
+   '("\\(?:[[:alpha:]_][[:alnum:]_]*\\|[[:digit:]]\\|)\\|\s*\\)\\.\\([[:alpha:]_][[:alnum:]_]*\\)\\s-*(" 1 font-lock-function-name-face)))
 
 (defun wollok--previous-non-empty-line ()
   (save-excursion
