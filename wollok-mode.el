@@ -1,3 +1,32 @@
+;;; wollok-mode.el --- Major mode for the Wollok programming language  -*- lexical-binding: t -*-
+
+;; Authors: Tomás Ralph <tomasralph2000@gmail.com>
+;; Created: 2024
+;; Version: 0.1
+;; Package-Requires: ((emacs "24.4"))
+;; Homepage: https://github.com/tralph3/wollok-mode
+;; Keywords: wollok languages
+
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;; A simple major mode for Wollok https://wollok.org
+
+
+;;; Code:
+
 (defvar wollok-mode-syntax-table
   (let ((syntax-table (make-syntax-table)))
     ;; Operators
@@ -15,21 +44,25 @@
     (modify-syntax-entry ?\n "> b"    syntax-table)
     (modify-syntax-entry ?\^m "> b"   syntax-table)
     syntax-table)
-  "Syntax table for `wollok-mode'")
+  "Syntax table for `wollok-mode'.")
 
 (defun wollok-keywords ()
+  "List of keywords for Wollok."
   '("var" "const" "mixin" "self" "return" "import" "method" "object"
     "program" "new" "val" "class" "package" "inherits" "override" "try"
     "catch" "throw" "property" "test" "describe" "then" "always" "if"
     "else" "while" "for"))
 
 (defun wollok-constants ()
+  "List of constants for Wollok."
   '("or" "and" "not" "true" "false" "null"))
 
 (defun wollok-builtins ()
+  "List of builtins for Wollok."
   '("assert" "console"))
 
 (defun wollok-mode-font-lock-keywords ()
+  "Font lock rules for Wollok."
   (list
    `(,(regexp-opt (wollok-keywords) 'symbols) 0 font-lock-keyword-face)
    `(,(regexp-opt (wollok-constants) 'symbols) 0 font-lock-constant-face)
@@ -54,6 +87,7 @@
    '("\\(?:[[:alpha:]_][[:alnum:]_]*\\|[[:digit:]]\\|)\\|\s*\\)\\.\\([[:alpha:]_][[:alnum:]_]*\\)\\s-*(" 1 font-lock-function-name-face)))
 
 (defun wollok--previous-non-empty-line ()
+  "Return the previous non-emtpy line from point."
   (save-excursion
     (forward-line -1)
     (while (and (not (bobp))
@@ -64,6 +98,7 @@
     (thing-at-point 'line t)))
 
 (defun wollok--indentation-of-previous-non-empty-line ()
+  "Return indentation of previous non-empty line from point."
   (save-excursion
     (forward-line -1)
     (while (and (not (bobp))
@@ -74,6 +109,7 @@
     (current-indentation)))
 
 (defun wollok--desired-indentation ()
+  "Return indentation level for the current line."
   (let* ((cur-line (string-trim-right (thing-at-point 'line t)))
          (prev-line (string-trim-right (wollok--previous-non-empty-line)))
          (indent-len 4)
@@ -98,6 +134,7 @@
      (t prev-indent))))
 
 (defun wollok-indent-line ()
+  "Indent current line according to its context."
   (interactive)
   (when (not (bobp))
     (let* ((desired-indentation
@@ -108,6 +145,7 @@
 
 ;;;###autoload
 (define-derived-mode wollok-mode prog-mode "Wollok"
+  "Major mode for the Wollok programming language."
   (setq-local comment-start "// ")
 
   (setq-local font-lock-defaults '(wollok-mode-font-lock-keywords))
